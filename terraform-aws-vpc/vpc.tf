@@ -1,9 +1,3 @@
-#create vpc 
-#attach IGW to Vpc 
-#Create subnets 
-#Create Route tables
-#create NAT gateway 
-
 resource "aws_vpc" "main" {
   cidr_block       = var.cidr
   instance_tenancy = "default"
@@ -147,24 +141,4 @@ resource "aws_route_table" "database" {
       Name = "${local.resource}-database"
     }
   )
-}
-
-resource "aws_route_table_association" "public" {
-  count = length(var.public_subnet_cidrs)
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public.id
-}
-
-
-resource "aws_route_table_association" "private" {
-  count = length(var.public_subnet_cidrs)
-  subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
-}
-
-
-resource "aws_route_table_association" "database" {
-  count = length(var.public_subnet_cidrs)
-  subnet_id      = aws_subnet.database[count.index].id
-  route_table_id = aws_route_table.database.id
 }
